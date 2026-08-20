@@ -1,0 +1,125 @@
+@import "tailwindcss";
+
+:root {
+  --radius: 0.5rem;
+
+  /* Divine You colour palette */
+  --ivory: oklch(97.7% 0.008 92);
+  --cream: oklch(95.5% 0.014 88);
+
+  --background: oklch(97.7% 0.008 92);
+  --foreground: oklch(26.5% 0.011 75);
+
+  --card: oklch(99.3% 0.004 95);
+  --card-foreground: oklch(26.5% 0.011 75);
+
+  --popover: oklch(99.3% 0.004 95);
+  --popover-foreground: oklch(26.5% 0.011 75);
+
+  --primary: oklch(36% 0.055 148);
+  --primary-foreground: oklch(97.7% 0.008 92);
+
+  --forest: oklch(36% 0.055 148);
+  --forest-foreground: oklch(97.7% 0.008 92);
+
+  --sage: oklch(85.5% 0.032 140);
+  --sage-foreground: oklch(30% 0.045 148);
+
+  --secondary: oklch(94% 0.018 100);
+  --secondary-foreground: oklch(30% 0.02 80);
+
+  --muted: oklch(94.5% 0.012 92);
+  --muted-foreground: oklch(50.5% 0.016 80);
+
+  --accent: oklch(91.2% 0.028 138);
+  --accent-foreground: oklch(30% 0.045 148);
+
+  --gold: oklch(72% 0.09 78);
+
+  --destructive: oklch(52.3% 0.15 27);
+  --destructive-foreground: oklch(97.7% 0.008 92);
+
+  --border: oklch(88.8% 0.012 88);
+  --input: oklch(88.8% 0.012 88);
+  --ring: oklch(36% 0.055 148);
+}
+
+@theme inline {
+  /* Fonts loaded through layout.tsx */
+  --font-sans: var(--font-karla);
+  --font-serif: var(--font-cormorant);
+
+  --font-mono: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+    "Liberation Mono", "Courier New", monospace;
+
+  /* Theme colours */
+  --color-ivory: var(--ivory);
+  --color-cream: var(--cream);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+
+  --color-forest: var(--forest);
+  --color-forest-foreground: var(--forest-foreground);
+
+  --color-sage: var(--sage);
+  --color-sage-foreground: var(--sage-foreground);
+
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+
+  --color-gold: var(--gold);
+
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+
+  /* Reusable shadows */
+  --shadow-soft: 0 1px 2px oklch(25% 0.02 90 / 0.04),
+    0 12px 30px -18px oklch(25% 0.02 90 / 0.18);
+
+  --shadow-lift: 0 2px 4px oklch(25% 0.02 90 / 0.05),
+    0 24px 44px -24px oklch(25% 0.02 90 / 0.26);
+}
+
+* {
+  box-sizing: border-box;
+  border-color: var(--border);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-karla), ui-sans-serif, system-ui, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
