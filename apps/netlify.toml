@@ -1,0 +1,7 @@
+[build]
+  command = "npm run build --workspace=apps/storefront"
+  publish = "apps/storefront/.next"
+  base = "apps/storefront"
+
+[build.environment]
+  NODE_VERSION = "18"
