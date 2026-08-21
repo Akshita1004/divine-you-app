@@ -29,26 +29,38 @@ const sortOptions = [
 function enrichProductsWithBadges(items: any[]): any[] {
   if (!Array.isArray(items) || items.length === 0) return [];
 
-  // 1. Sort all products by rating (handles numbers, strings, and null values)
-  const sortedByRating = [...items].sort((a: any, b: any) => {
+  // 1. Filter out products with rating <= 0 before finding top 4
+  const validForBestseller = items.filter((p: any) => {
+    const rating = parseFloat(String(p.rating ?? p.ratings ?? p.average_rating ?? p.avg_rating ?? p.stars ?? 0)) || 0;
+    return rating > 0;
+  });
+
+  // 2. Sort the valid products by rating in descending order
+  const sortedByRating = [...validForBestseller].sort((a: any, b: any) => {
     const rA = parseFloat(String(a.rating ?? a.ratings ?? a.average_rating ?? a.avg_rating ?? a.stars ?? 0)) || 0;
     const rB = parseFloat(String(b.rating ?? b.ratings ?? b.average_rating ?? b.avg_rating ?? b.stars ?? 0)) || 0;
     return rB - rA;
   });
 
-  // 2. Pick Top 4 highest rated product IDs
+  // 3. Pick Top 4 product IDs from the highest-rated ones
   const top4Ids = sortedByRating.slice(0, 4).map((p) => String(p.id));
 
-  // 3. Assign Badges (Top 4 get BESTSELLER, 5th onwards get NEW)
+  // 4. Assign Badges
   return items.map((item: any) => {
-    const isTop4 = top4Ids.includes(String(item.id));
+    const rating = parseFloat(String(item.rating ?? item.ratings ?? item.average_rating ?? item.avg_rating ?? item.stars ?? 0)) || 0;
+    
+    // Bestseller: Must be in top 4 AND rating must be strictly greater than 0
+    const isBestseller = top4Ids.includes(String(item.id)) && rating > 0;
+
+    // New: If not bestseller, check if created within last 30 days
     const createdAtTime = item.created_at ? new Date(item.created_at).getTime() : null;
-    const isWithin30Days = createdAtTime ? Date.now() - createdAtTime <= 30 * 24 * 60 * 60 * 1000 : true;
+    const isWithin30Days = createdAtTime ? Date.now() - createdAtTime <= 30 * 24 * 60 * 60 * 1000 : false;
+    const isNew = !isBestseller && isWithin30Days;
 
     return {
       ...item,
-      is_bestseller: isTop4,
-      is_new: !isTop4 && isWithin30Days,
+      is_bestseller: isBestseller,
+      is_new: isNew,
     };
   });
 }
