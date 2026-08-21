@@ -7,7 +7,7 @@ interface ProductPageProps {
   }>;
 }
 
-const API_URL = `${process.env.NEXT_PUBLIC_API_URL || "https://divine-you-web.onrender.com"}/api`;
+const API_URL = process.env.NEXT_PUBLIC_API_URL || "http://localhost:7000/api";
 
 // Helper function to convert string or array into string[]
 const formatToArray = (val: any, fallback: string[]): string[] => {
