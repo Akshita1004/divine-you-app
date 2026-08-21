@@ -1,7 +1,7 @@
 import axios, { InternalAxiosRequestConfig } from 'axios';
 
 const API = axios.create({
-  baseURL: process.env.NEXT_PUBLIC_API_URL || '/api',
+  baseURL: `${process.env.NEXT_PUBLIC_API_URL || 'https://divine-you-web.onrender.com'}/api`,
   headers: {
     'Content-Type': 'application/json',
   },
