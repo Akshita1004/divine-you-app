@@ -1,5 +1,5 @@
 import crypto from 'crypto';
-import { supabase } from '../config/supabase.js'; // Sahi path aapke config folder ke anusaar
+import { supabase } from '../config/supabase.js';
 
 // 1. Razorpay Webhook Handler
 export const handleRazorpayWebhook = async (req, res) => {
@@ -41,7 +41,22 @@ export const handleRazorpayWebhook = async (req, res) => {
 // 2. Shiprocket Webhook Handler
 export const handleShiprocketWebhook = async (req, res) => {
   try {
-    const { order_id, shipment_id, current_status, AWB, courier_name } = req.body;
+    // Optional Token Verification (Shiprocket x-api-key check)
+    const incomingToken = req.headers['x-api-key'] || req.headers['authorization'];
+    const expectedToken = process.env.SHIPROCKET_WEBHOOK_TOKEN;
+
+    if (expectedToken && incomingToken && incomingToken !== expectedToken) {
+      console.warn('⚠️ Unauthorized Shiprocket Webhook attempt detected.');
+      return res.status(401).json({ error: 'Unauthorized: Invalid Token' });
+    }
+
+    const { order_id, shipment_id, current_status, AWB, courier_name } = req.body || {};
+
+    // Agar Shiprocket test request bhej raha hai aur order_id nahi hai, toh bhi 200 OK de dein
+    if (!order_id) {
+      console.log('📦 Shiprocket Test Webhook Received Successfully!');
+      return res.status(200).json({ status: 'ok', message: 'Test webhook verified' });
+    }
 
     console.log(`📦 Shiprocket Webhook Received for Order ID: ${order_id}, Status: ${current_status}`);
 
