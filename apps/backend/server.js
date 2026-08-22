@@ -8,6 +8,8 @@ import productRoutes from './routes/products.js';
 import orderRoutes from './routes/orders.js';
 import contactRoutes from './routes/contact.js';
 import shippingRoutes from './routes/shipping.js';
+import webhookRoutes from './routes/webhooks.js';
+
 
 // Load environment variables
 dotenv.config();
@@ -26,7 +28,7 @@ app.use('/api/products', productRoutes);
 app.use('/api/orders', orderRoutes);
 app.use('/api/contact', contactRoutes);
 app.use('/api/shipping', shippingRoutes);
-
+app.use('/api/webhooks', webhookRoutes);
 // Root Healthcheck
 app.get('/', (req, res) => {
   res.json({ message: 'Divine You API Backend running smoothly with Supabase & Shiprocket' });

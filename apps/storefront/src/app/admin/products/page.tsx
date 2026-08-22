@@ -516,7 +516,7 @@ export default function AdminProductsPage() {
                     rows={2}
                     value={shippingReturns}
                     onChange={(e) => setShippingReturns(e.target.value)}
-                    placeholder="Ships within 24 hours. Free delivery on orders above Rs. 999."
+                    placeholder="Ships within 24 hours. Free delivery on orders above Rs. 999. Easy 15-day return policy."
                     className="w-full px-3.5 py-2 rounded-xl border border-[#ded8ca] text-xs outline-none focus:border-[#285538]"
                   />
                 </div>
