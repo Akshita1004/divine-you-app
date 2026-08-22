@@ -4,6 +4,6 @@ import { handleRazorpayWebhook, handleShiprocketWebhook } from '../controllers/w
 const router = express.Router();
 
 router.post('/razorpay', handleRazorpayWebhook);
-router.post('/shiprocket', handleShiprocketWebhook);
+router.post('/tracking-update', handleShiprocketWebhook); // Yahan badal diya
 
 export default router;
