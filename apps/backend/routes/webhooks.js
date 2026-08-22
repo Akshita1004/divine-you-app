@@ -4,6 +4,11 @@ import { handleRazorpayWebhook, handleShiprocketWebhook } from '../controllers/w
 const router = express.Router();
 
 router.post('/razorpay', handleRazorpayWebhook);
-router.post('/tracking-update', handleShiprocketWebhook); // Yahan badal diya
+
+// Shiprocket ke liye POST aur GET dono allow kar dete hain taaki test ping fail na ho
+router.post('/tracking-update', handleShiprocketWebhook);
+router.get('/tracking-update', (req, res) => {
+  res.status(200).json({ status: 'ok', message: 'Shiprocket webhook endpoint is active' });
+});
 
 export default router;
