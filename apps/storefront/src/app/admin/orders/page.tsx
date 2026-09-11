@@ -20,6 +20,7 @@ import {
   ZoomIn,
   Copy,
   Video,
+  ChevronRight,
 } from "lucide-react";
 import { supabase } from "@/lib/supabaseClient";
 
@@ -278,7 +279,6 @@ export default function AdminOrdersPage() {
     }
   }
 
-  // 1-Click Approve Return
   async function handleApproveReturn(order: Order) {
     const isCOD = order.payment_method === "Cash on Delivery" || order.payment_status === "PENDING";
     let codRef = null;
@@ -322,7 +322,6 @@ export default function AdminOrdersPage() {
     }
   }
 
-  // Reject Return Request
   async function handleRejectReturn(orderId: string) {
     const reason = prompt("Enter reason for declining this return (will be logged):", "Photos/Videos do not show manufacturing defect.");
     if (reason === null) return;
@@ -455,74 +454,22 @@ export default function AdminOrdersPage() {
       </div>
 
       {/* Controls Container */}
-      <div className="bg-white rounded-2xl border border-[#e8e2d4]/80 p-4 space-y-4">
-        <div className="flex flex-wrap items-center justify-between gap-3 border-b border-[#f3efe6] pb-3">
-          
-          {/* Section Tabs */}
-          <div className="flex items-center gap-1.5 bg-[#fbf9f3] p-1 rounded-xl border border-[#ded8ca]/60 flex-wrap">
-            <button
-              type="button"
-              onClick={() => setActiveTab("ALL")}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
-                activeTab === "ALL"
-                  ? "bg-[#243126] text-white shadow-sm"
-                  : "text-[#66655d] hover:text-[#243126]"
-              }`}
-            >
-              All ({counts.all})
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("PENDING")}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
-                activeTab === "PENDING"
-                  ? "bg-[#243126] text-white shadow-sm"
-                  : "text-[#66655d] hover:text-[#243126]"
-              }`}
-            >
-              Pending ({counts.pending})
-            </button>
-            <button
-              type="button"
-              onClick={() => setActiveTab("FULFILLED")}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
-                activeTab === "FULFILLED"
-                  ? "bg-[#243126] text-white shadow-sm"
-                  : "text-[#66655d] hover:text-[#243126]"
-              }`}
-            >
-              Fulfilled ({counts.fulfilled})
-            </button>
-            
-            {/* Returns Tab */}
-            <button
-              type="button"
-              onClick={() => setActiveTab("RETURNS")}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer flex items-center gap-1.5 ${
-                activeTab === "RETURNS"
-                  ? "bg-[#B37410] text-white shadow-sm"
-                  : "text-[#B37410] hover:bg-[#FFF6E5]"
-              }`}
-            >
-              <RotateCcw size={12} />
-              <span>Returns ({counts.returns})</span>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => setActiveTab("CANCELLED")}
-              className={`px-3.5 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer ${
-                activeTab === "CANCELLED"
-                  ? "bg-[#243126] text-white shadow-sm"
-                  : "text-[#66655d] hover:text-[#243126]"
-              }`}
-            >
-              Cancelled ({counts.cancelled})
-            </button>
+      <div className="bg-white rounded-2xl border border-[#e8e2d4]/80 p-3.5 sm:p-4 space-y-3">
+        
+        {/* Search Bar & Sort Dropdown Row */}
+        <div className="flex items-center gap-2">
+          <div className="relative flex-1">
+            <Search size={15} className="absolute left-3.5 top-2.5 text-[#807d73]" />
+            <input
+              type="text"
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              placeholder="Search order ID or name..."
+              className="w-full pl-9 pr-3 py-2 rounded-xl border border-[#ded8ca] bg-[#fbf9f3] text-xs outline-none focus:border-[#285538] text-[#243126]"
+            />
           </div>
 
-          {/* Sort Dropdown */}
-          <div className="relative">
+          <div className="relative shrink-0">
             {isSortOpen && (
               <div
                 className="fixed inset-0 z-20"
@@ -532,19 +479,20 @@ export default function AdminOrdersPage() {
             <button
               type="button"
               onClick={() => setIsSortOpen(!isSortOpen)}
-              className="bg-[#fbf9f3] hover:bg-[#f3efe6] border border-[#ded8ca] rounded-xl px-3.5 py-2 text-xs font-medium text-[#243126] flex items-center gap-2.5 transition cursor-pointer shadow-xs"
+              className="bg-[#fbf9f3] hover:bg-[#f3efe6] border border-[#ded8ca] rounded-xl px-3 py-2 text-xs font-medium text-[#243126] flex items-center gap-1.5 transition cursor-pointer shadow-xs"
             >
               <ArrowUpDown size={13} className="text-[#243126]" />
-              <span>{currentSortObj.label}</span>
+              <span className="hidden sm:inline">{currentSortObj.label}</span>
+              <span className="sm:hidden">Sort</span>
               {isSortOpen ? (
-                <ChevronUp size={14} className="text-[#66655d]" />
+                <ChevronUp size={13} className="text-[#66655d]" />
               ) : (
-                <ChevronDown size={14} className="text-[#66655d]" />
+                <ChevronDown size={13} className="text-[#66655d]" />
               )}
             </button>
 
             {isSortOpen && (
-              <div className="absolute right-0 top-full mt-1.5 w-56 bg-[#fbf8f1] border border-[#ded8ca]/90 rounded-2xl shadow-xl p-1.5 z-30 space-y-1">
+              <div className="absolute right-0 top-full mt-1.5 w-48 bg-[#fbf8f1] border border-[#ded8ca]/90 rounded-2xl shadow-xl p-1.5 z-30 space-y-1">
                 {SORT_OPTIONS.map((opt) => {
                   const isSelected = opt.value === sortBy;
                   return (
@@ -555,14 +503,14 @@ export default function AdminOrdersPage() {
                         setSortBy(opt.value as any);
                         setIsSortOpen(false);
                       }}
-                      className={`w-full text-left px-3.5 py-2.5 rounded-xl text-xs flex items-center justify-between transition cursor-pointer ${
+                      className={`w-full text-left px-3 py-2 rounded-xl text-xs flex items-center justify-between transition cursor-pointer ${
                         isSelected
                           ? "bg-[#dce6d8] text-[#243126] font-medium"
                           : "text-[#243126] hover:bg-[#f3efe6]/80 font-normal"
                       }`}
                     >
                       <span>{opt.label}</span>
-                      {isSelected && <Check size={14} className="text-[#243126]" />}
+                      {isSelected && <Check size={13} className="text-[#243126]" />}
                     </button>
                   );
                 })}
@@ -571,20 +519,71 @@ export default function AdminOrdersPage() {
           </div>
         </div>
 
-        {/* Search Bar */}
-        <div className="relative">
-          <Search size={16} className="absolute left-3.5 top-2.5 text-[#807d73]" />
-          <input
-            type="text"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-            placeholder="Search by Order ID or Customer Name..."
-            className="w-full pl-10 pr-4 py-2 rounded-xl border border-[#ded8ca] bg-[#fbf9f3] text-xs outline-none focus:border-[#285538] text-[#243126]"
-          />
+        {/* Horizontal Scrollable Clean Tabs */}
+        <div className="flex items-center gap-1.5 overflow-x-auto pb-1 no-scrollbar">
+          <button
+            type="button"
+            onClick={() => setActiveTab("ALL")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer shrink-0 ${
+              activeTab === "ALL"
+                ? "bg-[#243126] text-white shadow-sm"
+                : "bg-[#fbf9f3] text-[#66655d] border border-[#ded8ca]/60 hover:text-[#243126]"
+            }`}
+          >
+            All ({counts.all})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("PENDING")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer shrink-0 ${
+              activeTab === "PENDING"
+                ? "bg-[#243126] text-white shadow-sm"
+                : "bg-[#fbf9f3] text-[#66655d] border border-[#ded8ca]/60 hover:text-[#243126]"
+            }`}
+          >
+            Pending ({counts.pending})
+          </button>
+          <button
+            type="button"
+            onClick={() => setActiveTab("FULFILLED")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer shrink-0 ${
+              activeTab === "FULFILLED"
+                ? "bg-[#243126] text-white shadow-sm"
+                : "bg-[#fbf9f3] text-[#66655d] border border-[#ded8ca]/60 hover:text-[#243126]"
+            }`}
+          >
+            Fulfilled ({counts.fulfilled})
+          </button>
+          
+          <button
+            type="button"
+            onClick={() => setActiveTab("RETURNS")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer shrink-0 flex items-center gap-1 ${
+              activeTab === "RETURNS"
+                ? "bg-[#B37410] text-white shadow-sm"
+                : "bg-[#FFF6E5] text-[#B37410] border border-[#F5DCB0]/80 hover:bg-[#FDEED2]"
+            }`}
+          >
+            <RotateCcw size={11} />
+            <span>Returns ({counts.returns})</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={() => setActiveTab("CANCELLED")}
+            className={`px-3 py-1.5 rounded-lg text-xs font-medium transition cursor-pointer shrink-0 ${
+              activeTab === "CANCELLED"
+                ? "bg-[#243126] text-white shadow-sm"
+                : "bg-[#fbf9f3] text-[#66655d] border border-[#ded8ca]/60 hover:text-[#243126]"
+            }`}
+          >
+            Cancelled ({counts.cancelled})
+          </button>
         </div>
+
       </div>
 
-      {/* Orders Table Container */}
+      {/* Orders View Container */}
       <div className="bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
         {loading ? (
           <div className="p-16 flex justify-center text-[#807d73]">
@@ -595,71 +594,136 @@ export default function AdminOrdersPage() {
             No orders found matching your active filters.
           </div>
         ) : (
-          <div className="overflow-x-auto min-h-[320px]">
-            <table className="w-full text-left text-xs text-[#243126]">
-              <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
-                <tr>
-                  <th className="p-5 font-semibold">ORDER</th>
-                  <th className="p-5 font-semibold">DATE</th>
-                  <th className="p-5 font-semibold">CUSTOMER</th>
-                  <th className="p-5 font-semibold">COURIER</th>
-                  <th className="p-5 font-semibold">TOTAL</th>
-                  <th className="p-5 font-semibold">STATUS</th>
-                  <th className="p-5 font-semibold text-right">ACTION</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#f3efe6]">
-                {processedOrders.map((order) => {
-                  const normStatus = getNormalizedStatus(order.status);
-                  const isReturn = normStatus === "Return Requested";
+          <>
+            {/* Desktop View Table (Untouched) */}
+            <div className="hidden sm:block overflow-x-auto min-h-[320px]">
+              <table className="w-full text-left text-xs text-[#243126]">
+                <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
+                  <tr>
+                    <th className="p-5 font-semibold">ORDER</th>
+                    <th className="p-5 font-semibold">DATE</th>
+                    <th className="p-5 font-semibold">CUSTOMER</th>
+                    <th className="p-5 font-semibold">COURIER</th>
+                    <th className="p-5 font-semibold">TOTAL</th>
+                    <th className="p-5 font-semibold">STATUS</th>
+                    <th className="p-5 font-semibold text-right">ACTION</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-[#f3efe6]">
+                  {processedOrders.map((order) => {
+                    const normStatus = getNormalizedStatus(order.status);
+                    const isReturn = normStatus === "Return Requested";
 
-                  return (
-                    <tr key={order.id} className={`hover:bg-[#fbf9f3]/60 transition-colors ${isReturn ? "bg-[#FFFDF9]" : ""}`}>
-                      <td className="p-5 font-medium text-[#243126]">
+                    return (
+                      <tr key={order.id} className={`hover:bg-[#fbf9f3]/60 transition-colors ${isReturn ? "bg-[#FFFDF9]" : ""}`}>
+                        <td className="p-5 font-medium text-[#243126]">
+                          <div className="flex items-center gap-1.5">
+                            <span>{order.id}</span>
+                            {isReturn && (
+                              <span className="h-2 w-2 rounded-full bg-[#B37410] animate-pulse" title="Needs Return Review" />
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-5 text-[#66655d]">{order.created_at}</td>
+                        <td className="p-5 font-medium text-[#243126]">{order.customer_name}</td>
+                        <td className="p-5 text-[#66655d]">
+                          <div>
+                            <p className="font-medium text-[#243126]">{order.courier_info}</p>
+                            {order.awb_code && (
+                              <p className="text-[10px] text-[#807D73] font-mono">AWB: {order.awb_code}</p>
+                            )}
+                          </div>
+                        </td>
+                        <td className="p-5 font-semibold text-[#243126]">
+                          ₹{order.total_amount.toLocaleString("en-IN")}
+                        </td>
+                        <td className="p-5">
+                          <span className={`inline-block px-3 py-1 rounded-md text-[10px] font-semibold tracking-wider uppercase ${getBadgeStyle(order.status)}`}>
+                            {normStatus}
+                          </span>
+                        </td>
+                        <td className="p-5 text-right">
+                          <button
+                            type="button"
+                            onClick={() => setSelectedOrder(order)}
+                            className={`font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer text-xs ${
+                              isReturn
+                                ? "bg-[#FFF6E5] text-[#B37410] border border-[#F5DCB0] hover:bg-[#FDEED2]"
+                                : "text-[#243126] hover:text-[#285538] hover:underline"
+                            }`}
+                          >
+                            {isReturn ? "Review Return" : "View"}
+                          </button>
+                        </td>
+                      </tr>
+                    );
+                  })}
+                </tbody>
+              </table>
+            </div>
+
+            {/* Mobile View Card List (No Horizontal Scroll) */}
+            <div className="block sm:hidden space-y-3.5 p-4">
+              {processedOrders.map((order) => {
+                const normStatus = getNormalizedStatus(order.status);
+                const isReturn = normStatus === "Return Requested";
+
+                return (
+                  <div
+                    key={order.id}
+                    className={`rounded-2xl p-4 border space-y-3 shadow-xs ${
+                      isReturn ? "bg-[#FFFDF9] border-[#F5DCB0]" : "bg-white border-[#e8e2d4]/80"
+                    }`}
+                  >
+                    <div className="flex items-start justify-between gap-2">
+                      <div>
                         <div className="flex items-center gap-1.5">
-                          <span>{order.id}</span>
+                          <p className="font-serif text-sm font-medium text-[#243126]">
+                            {order.id}
+                          </p>
                           {isReturn && (
-                            <span className="h-2 w-2 rounded-full bg-[#B37410] animate-pulse" title="Needs Return Review" />
+                            <span className="h-2 w-2 rounded-full bg-[#B37410] animate-pulse" />
                           )}
                         </div>
-                      </td>
-                      <td className="p-5 text-[#66655d]">{order.created_at}</td>
-                      <td className="p-5 font-medium text-[#243126]">{order.customer_name}</td>
-                      <td className="p-5 text-[#66655d]">
-                        <div>
-                          <p className="font-medium text-[#243126]">{order.courier_info}</p>
-                          {order.awb_code && (
-                            <p className="text-[10px] text-[#807D73] font-mono">AWB: {order.awb_code}</p>
-                          )}
-                        </div>
-                      </td>
-                      <td className="p-5 font-semibold text-[#243126]">
+                        <p className="text-xs font-semibold text-[#243126] mt-0.5">
+                          {order.customer_name}
+                        </p>
+                      </div>
+                      <span className={`inline-block px-2.5 py-0.5 rounded text-[10px] font-semibold tracking-wider uppercase shrink-0 ${getBadgeStyle(order.status)}`}>
+                        {normStatus}
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between text-[11px] text-[#66655d] pt-1 border-t border-[#f3efe6]">
+                      <span>{order.created_at}</span>
+                      <span className="font-semibold text-xs text-[#243126]">
                         ₹{order.total_amount.toLocaleString("en-IN")}
-                      </td>
-                      <td className="p-5">
-                        <span className={`inline-block px-3 py-1 rounded-md text-[10px] font-semibold tracking-wider uppercase ${getBadgeStyle(order.status)}`}>
-                          {normStatus}
-                        </span>
-                      </td>
-                      <td className="p-5 text-right">
-                        <button
-                          type="button"
-                          onClick={() => setSelectedOrder(order)}
-                          className={`font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer text-xs ${
-                            isReturn
-                              ? "bg-[#FFF6E5] text-[#B37410] border border-[#F5DCB0] hover:bg-[#FDEED2]"
-                              : "text-[#243126] hover:text-[#285538] hover:underline"
-                          }`}
-                        >
-                          {isReturn ? "Review Return" : "View"}
-                        </button>
-                      </td>
-                    </tr>
-                  );
-                })}
-              </tbody>
-            </table>
-          </div>
+                      </span>
+                    </div>
+
+                    <div className="flex items-center justify-between pt-2.5 border-t border-[#f3efe6] text-xs">
+                      <span className="text-[#807d73] text-[11px] truncate max-w-[180px]">
+                        {order.courier_info}
+                      </span>
+
+                      <button
+                        type="button"
+                        onClick={() => setSelectedOrder(order)}
+                        className={`font-semibold px-3 py-1.5 rounded-lg transition cursor-pointer text-xs flex items-center gap-1 ${
+                          isReturn
+                            ? "bg-[#FFF6E5] text-[#B37410] border border-[#F5DCB0]"
+                            : "bg-[#f3efe6] text-[#243126] hover:bg-[#e8e2d4]"
+                        }`}
+                      >
+                        <span>{isReturn ? "Review Return" : "View Details"}</span>
+                        <ChevronRight size={13} />
+                      </button>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          </>
         )}
       </div>
 
@@ -707,7 +771,7 @@ export default function AdminOrdersPage() {
                   <p><strong className="text-[#1C1A19]">Reason:</strong> {selectedOrder.return_details.reason || "N/A"}</p>
                   {selectedOrder.return_details.comments && (
                     <p className="bg-white p-3 rounded-xl border border-[#F5DCB0]/60 italic text-[#443F35]">
-                      "{selectedOrder.return_details.comments}"
+                      &quot;{selectedOrder.return_details.comments}&quot;
                     </p>
                   )}
                   <p className="text-[11px] text-[#807D73]">

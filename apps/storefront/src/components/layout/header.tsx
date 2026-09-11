@@ -14,6 +14,7 @@ export function Header() {
 
   return (
     <header className="sticky top-0 z-40 border-b border-[#ded8ca]/80 bg-[#fbf9f3]/85 backdrop-blur-md">
+      {/* Top Header Row (Original Desktop View Untouched) */}
       <div className="flex h-20 items-center px-8 lg:px-9">
         <div className="-ml-3 flex items-center gap-12">
           <Link href="/" className="flex shrink-0 items-center gap-4">
@@ -62,7 +63,7 @@ export function Header() {
             <Search size={18} strokeWidth={1.7} />
           </button>
 
-          {/* Account Link (Without Green Dot) */}
+          {/* Account Link */}
           <Link
             href={isLoggedIn ? "/account" : "/login?mode=signup"}
             aria-label="Account"
@@ -88,6 +89,22 @@ export function Header() {
           </button>
         </div>
       </div>
+
+      {/* Mobile-Only Secondary Navigation Row (Exact Font & Style Matching) */}
+      <nav className="flex md:hidden items-center justify-center gap-8 py-3 border-t border-[#e8e2d4]/60 text-[13px] font-normal tracking-[0.07em] text-[#6a6861] overflow-x-auto px-4">
+        <Link href="/shop" className="transition hover:text-[#285538] whitespace-nowrap">
+          Shop
+        </Link>
+        <Link href="/best-sellers" className="transition hover:text-[#285538] whitespace-nowrap">
+          Best Sellers
+        </Link>
+        <Link href="/about" className="transition hover:text-[#285538] whitespace-nowrap">
+          About Us
+        </Link>
+        <Link href="/contact" className="transition hover:text-[#285538] whitespace-nowrap">
+          Contact
+        </Link>
+      </nav>
     </header>
   );
 }

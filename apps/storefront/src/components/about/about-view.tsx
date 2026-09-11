@@ -41,16 +41,16 @@ export function AboutView() {
   }, []);
 
   return (
-    <main className="min-h-screen bg-[#fbf9f3] text-[#243126] flex flex-col justify-between">
+    <main className="min-h-screen bg-[#f7f3eb] text-[#243126] flex flex-col justify-between">
       <div>
         <TrustBar />
         <Header />
 
-        {/* Hero-style Background Video Section */}
-        <section className="relative isolate min-h-[540px] overflow-hidden bg-[#fbf9f3] my-6 sm:my-10 lg:my-12 py-8 sm:py-12">
+        {/* Hero-style Background Video Section with Hero-matching Layout & CSS Mask for Mobile */}
+        <section className="relative isolate overflow-hidden bg-[#f7f3eb] my-6 sm:my-10 lg:my-12 py-8 sm:py-12">
           
-          {/* Right Background Video Container */}
-          <div className="absolute inset-y-0 right-0 w-full lg:w-[60%] pointer-events-none">
+          {/* Desktop Background Video Container (Untouched for Web View) */}
+          <div className="hidden lg:block absolute inset-y-0 right-0 w-[60%] pointer-events-none">
             <video
               ref={videoRef}
               src="/videos/hero-video.mp4"
@@ -61,14 +61,14 @@ export function AboutView() {
                 isFading ? "opacity-0" : "opacity-100"
               }`}
             />
-
-            {/* Extended Right Gradient Overlay */}
-            <div className="absolute inset-0 bg-gradient-to-r from-[#fbf9f3] via-[#fbf9f3]/85 via-35% to-transparent to-75%" />
+            <div className="absolute inset-0 bg-gradient-to-r from-[#f7f3eb] via-[#f7f3eb]/65 via-15% to-transparent to-48%" />
           </div>
 
-          {/* Foreground Text Content */}
-          <div className="relative z-10 mx-auto flex min-h-[460px] max-w-7xl items-center px-6 lg:px-12">
-            <div className="max-w-xl space-y-4">
+          {/* Main Container */}
+          <div className="relative z-10 mx-auto max-w-7xl px-6 lg:px-12 flex flex-col lg:flex-row lg:items-center lg:min-h-[540px]">
+            
+            {/* Foreground Text Content */}
+            <div className="max-w-xl space-y-4 pt-2">
               <p className="text-[10px] sm:text-[11px] font-semibold uppercase tracking-[0.25em] text-[#38553d]">
                 OUR STORY
               </p>
@@ -88,6 +88,25 @@ export function AboutView() {
                 </p>
               </div>
             </div>
+
+            {/* Mobile Video Stack with CSS Mask Fade (Identical to Hero Section Pattern) */}
+            <div 
+              className="block lg:hidden relative w-[calc(100%+3rem)] -mx-6 h-[400px] sm:h-[460px] mt-10"
+              style={{
+                WebkitMaskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 100%)',
+                maskImage: 'linear-gradient(to bottom, transparent 0%, black 35%, black 100%)',
+              }}
+            >
+              <video
+                src="/videos/hero-video.mp4"
+                autoPlay
+                muted
+                loop
+                playsInline
+                className="h-full w-full object-cover object-center"
+              />
+            </div>
+
           </div>
         </section>
       </div>

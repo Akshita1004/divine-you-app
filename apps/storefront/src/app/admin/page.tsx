@@ -187,24 +187,24 @@ export default function AdminDashboardPage() {
           Dashboard
         </h1>
         <p className="text-xs sm:text-sm text-[#66655d]">
-          Everything here is shared with the storefront — edits appear instantly.
+          Everything here is shared with the website — edits appear instantly.
         </p>
       </div>
 
-      {/* Navigational Stat Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
+      {/* Navigational Stat Cards: grid-cols-2 on mobile, lg:grid-cols-3 on desktop */}
+      <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-5">
         {/* Products Card */}
         <Link
           href="/admin/products"
-          className="bg-white rounded-2xl p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
+          className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between">
             <Package size={22} className="text-[#285538] stroke-[1.75]" />
             <ArrowUpRight size={16} className="text-[#807d73] group-hover:text-[#285538] transition-colors" />
           </div>
           <div>
-            <p className="font-serif text-3xl font-normal text-[#243126]">{stats.products}</p>
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
+            <p className="font-serif text-2xl sm:text-3xl font-normal text-[#243126]">{stats.products}</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
               PRODUCTS
             </p>
           </div>
@@ -213,15 +213,15 @@ export default function AdminDashboardPage() {
         {/* Categories Card */}
         <Link
           href="/admin/categories"
-          className="bg-white rounded-2xl p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
+          className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between">
             <FolderTree size={22} className="text-[#285538] stroke-[1.75]" />
             <ArrowUpRight size={16} className="text-[#807d73] group-hover:text-[#285538] transition-colors" />
           </div>
           <div>
-            <p className="font-serif text-3xl font-normal text-[#243126]">{stats.categories}</p>
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
+            <p className="font-serif text-2xl sm:text-3xl font-normal text-[#243126]">{stats.categories}</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
               CATEGORIES
             </p>
           </div>
@@ -230,15 +230,15 @@ export default function AdminDashboardPage() {
         {/* Blogs Card */}
         <Link
           href="/admin/blogs"
-          className="bg-white rounded-2xl p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
+          className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between">
             <FileText size={22} className="text-[#285538] stroke-[1.75]" />
             <ArrowUpRight size={16} className="text-[#807d73] group-hover:text-[#285538] transition-colors" />
           </div>
           <div>
-            <p className="font-serif text-3xl font-normal text-[#243126]">{stats.blogs}</p>
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
+            <p className="font-serif text-2xl sm:text-3xl font-normal text-[#243126]">{stats.blogs}</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
               BLOGS
             </p>
           </div>
@@ -247,15 +247,15 @@ export default function AdminDashboardPage() {
         {/* Orders Card */}
         <Link
           href="/admin/orders"
-          className="bg-white rounded-2xl p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
+          className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between">
             <ShoppingBag size={22} className="text-[#285538] stroke-[1.75]" />
             <ArrowUpRight size={16} className="text-[#807d73] group-hover:text-[#285538] transition-colors" />
           </div>
           <div>
-            <p className="font-serif text-3xl font-normal text-[#243126]">{stats.orders}</p>
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
+            <p className="font-serif text-2xl sm:text-3xl font-normal text-[#243126]">{stats.orders}</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
               ORDERS ({stats.pendingOrders} PENDING)
             </p>
           </div>
@@ -264,15 +264,15 @@ export default function AdminDashboardPage() {
         {/* Reviews Card */}
         <Link
           href="/admin/reviews"
-          className="bg-white rounded-2xl p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
+          className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between">
             <MessageSquareQuote size={22} className="text-[#285538] stroke-[1.75]" />
             <ArrowUpRight size={16} className="text-[#807d73] group-hover:text-[#285538] transition-colors" />
           </div>
           <div>
-            <p className="font-serif text-3xl font-normal text-[#243126]">{stats.reviews}</p>
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
+            <p className="font-serif text-2xl sm:text-3xl font-normal text-[#243126]">{stats.reviews}</p>
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
               REVIEWS
             </p>
           </div>
@@ -281,17 +281,17 @@ export default function AdminDashboardPage() {
         {/* Order Value Card */}
         <Link
           href="/admin/orders"
-          className="bg-white rounded-2xl p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
+          className="bg-white rounded-2xl p-4 sm:p-6 border border-[#e8e2d4]/70 shadow-none hover:border-[#285538] hover:shadow-md transition-all group cursor-pointer flex flex-col justify-between space-y-4"
         >
           <div className="flex items-center justify-between">
             <TrendingUp size={22} className="text-[#285538] stroke-[1.75]" />
             <ArrowUpRight size={16} className="text-[#807d73] group-hover:text-[#285538] transition-colors" />
           </div>
           <div>
-            <p className="font-serif text-3xl font-normal text-[#243126]">
+            <p className="font-serif text-2xl sm:text-3xl font-normal text-[#243126]">
               ₹{stats.orderValue.toLocaleString("en-IN")}
             </p>
-            <p className="text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
+            <p className="text-[9px] sm:text-[10px] font-semibold tracking-[0.2em] text-[#807d73] uppercase mt-1">
               ORDER VALUE
             </p>
           </div>

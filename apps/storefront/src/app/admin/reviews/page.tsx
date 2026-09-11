@@ -34,7 +34,6 @@ export default function AdminReviewsPage() {
 
   function formatProductName(str: string) {
     if (!str) return "Ayurvedic Product";
-    // Check if it's a UUID, don't format UUID as name
     if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(str)) {
       return "Ayurvedic Product";
     }
@@ -50,7 +49,6 @@ export default function AdminReviewsPage() {
     try {
       setLoading(true);
 
-      // Parallel fetch: reviews and actual products list
       const [reviewsRes, productsRes] = await Promise.all([
         supabase.from("reviews").select("*").order("created_at", { ascending: false }),
         supabase.from("products").select("id, name, title"),
@@ -59,7 +57,6 @@ export default function AdminReviewsPage() {
       let data = reviewsRes.data || [];
       const productsData = productsRes.data || [];
 
-      // If 'reviews' is empty, try fallback 'product_reviews' table
       if (data.length === 0) {
         const fallbackRes = await supabase
           .from("product_reviews")
@@ -68,7 +65,6 @@ export default function AdminReviewsPage() {
         data = fallbackRes.data || [];
       }
 
-      // Map product_id to real product name
       const productsMap = new Map<string, string>();
       productsData.forEach((p: any) => {
         if (p.id) {
@@ -76,13 +72,11 @@ export default function AdminReviewsPage() {
         }
       });
 
-      // Group reviews by product
       const groupsMap = new Map<string, ReviewItem[]>();
 
       data.forEach((rev: any) => {
         const rawProductId = rev.product_id || rev.product_slug || rev.product || "default";
 
-        // Resolve real human-readable product name
         const realProductName =
           productsMap.get(rev.product_id) ||
           productsMap.get(rawProductId) ||
@@ -107,7 +101,6 @@ export default function AdminReviewsPage() {
         groupsMap.set(groupKey, existing);
       });
 
-      // Format groups with average rating calculation
       const formattedGroups: ProductGroup[] = Array.from(groupsMap.entries()).map(
         ([key, reviews]) => {
           const totalRating = reviews.reduce((sum, r) => sum + r.rating, 0);
@@ -157,7 +150,7 @@ export default function AdminReviewsPage() {
               className="bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none"
             >
               {/* Group Product Header */}
-              <div className="bg-[#fbf9f3] p-5 border-b border-[#e8e2d4]/70 flex flex-wrap items-center justify-between gap-3">
+              <div className="bg-[#fbf9f3] p-4 sm:p-5 border-b border-[#e8e2d4]/70 flex flex-wrap items-center justify-between gap-3">
                 <div className="flex items-center gap-3">
                   <div className="p-2 bg-[#f3efe6] rounded-lg border border-[#e8e2d4]/60 text-[#243126]">
                     <Package size={18} />
@@ -180,8 +173,8 @@ export default function AdminReviewsPage() {
                 </div>
               </div>
 
-              {/* Group Reviews Table */}
-              <div className="overflow-x-auto">
+              {/* Desktop Table View (Untouched) */}
+              <div className="hidden sm:block overflow-x-auto">
                 <table className="w-full text-left text-xs text-[#243126]">
                   <thead className="bg-[#faf8f2]/50 text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#f3efe6]">
                     <tr>
@@ -230,6 +223,41 @@ export default function AdminReviewsPage() {
                     ))}
                   </tbody>
                 </table>
+              </div>
+
+              {/* Mobile View Card List (No Horizontal Scroll) */}
+              <div className="block sm:hidden divide-y divide-[#f3efe6]">
+                {group.reviews.map((rev) => (
+                  <div key={rev.id} className="p-4 space-y-2.5">
+                    <div className="flex items-center justify-between text-xs">
+                      <span className="font-semibold text-[#243126]">{rev.reviewer_name}</span>
+                      <span className="text-[11px] text-[#807d73]">{rev.created_at}</span>
+                    </div>
+
+                    <div className="flex items-center gap-0.5 text-[#285538]">
+                      {[1, 2, 3, 4, 5].map((star) => (
+                        <Star
+                          key={star}
+                          size={12}
+                          className={
+                            star <= rev.rating
+                              ? "fill-[#285538] stroke-none"
+                              : "text-[#ded8ca] stroke-current fill-none"
+                          }
+                        />
+                      ))}
+                    </div>
+
+                    <div className="space-y-1 text-xs">
+                      {rev.title && (
+                        <p className="font-semibold text-[#243126]">{rev.title}</p>
+                      )}
+                      <p className="text-[#66655d] leading-relaxed">
+                        {rev.comment}
+                      </p>
+                    </div>
+                  </div>
+                ))}
               </div>
             </div>
           ))}

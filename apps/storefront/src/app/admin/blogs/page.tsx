@@ -170,7 +170,6 @@ export default function AdminBlogsPage() {
   async function handleToggleStatus(blog: BlogArticle) {
     const newStatus = blog.status === "Published" ? "Draft" : "Published";
 
-    // Optimistically update UI
     setBlogs((prev) =>
       prev.map((b) => (b.id === blog.id ? { ...b, status: newStatus } : b))
     );
@@ -183,7 +182,6 @@ export default function AdminBlogsPage() {
 
       if (error) {
         alert("Database status update failed: " + error.message);
-        // Rollback state if DB update failed
         fetchBlogs();
       }
     } catch (err) {
@@ -294,7 +292,7 @@ export default function AdminBlogsPage() {
   }
 
   return (
-    <div className="max-w-6xl space-y-8">
+    <div className="max-w-6xl space-y-6 sm:space-y-8">
       {/* Header Bar */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div className="space-y-1">
@@ -316,98 +314,165 @@ export default function AdminBlogsPage() {
         </button>
       </div>
 
-      {/* Articles Table Container */}
-      <div className="bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
-        {loading ? (
-          <div className="p-16 flex justify-center text-[#807d73]">
-            <Loader2 className="animate-spin" size={24} />
-          </div>
-        ) : blogs.length === 0 ? (
-          <div className="p-12 text-center text-xs text-[#807d73]">
-            No blog articles found in database. Click &quot;New article&quot; to write one.
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-[#243126]">
-              <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
-                <tr>
-                  <th className="p-5 font-semibold w-2/5">ARTICLE</th>
-                  <th className="p-5 font-semibold">CATEGORY</th>
-                  <th className="p-5 font-semibold">PUBLISHED</th>
-                  <th className="p-5 font-semibold">LIKES</th>
-                  <th className="p-5 font-semibold">STATUS</th>
-                  <th className="p-5 font-semibold text-right"></th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#f3efe6]">
-                {blogs.map((blog) => (
-                  <tr key={blog.id} className="hover:bg-[#fbf9f3]/60 transition-colors">
-                    <td className="p-5 space-y-0.5">
-                      <p className="font-medium text-[#243126] line-clamp-1">
-                        {blog.title}
-                      </p>
-                      <p className="text-[11px] text-[#807d73]">{blog.author}</p>
-                    </td>
-
-                    <td className="p-5 text-[#66655d]">{blog.category}</td>
-
-                    <td className="p-5 text-[#66655d]">
-                      {formatDateShort(blog.published_date)}
-                    </td>
-
-                    <td className="p-5 font-medium text-[#243126]">{blog.likes}</td>
-
-                    <td className="p-5">
-                      <span
-                        className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-semibold tracking-wider ${
-                          blog.status === "Published"
-                            ? "bg-[#dce6d8] text-[#243126]"
-                            : "bg-[#f3efe6] text-[#807d73]"
-                        }`}
-                      >
-                        {blog.status}
-                      </span>
-                    </td>
-
-                    <td className="p-5 text-right space-x-3">
-                      <button
-                        type="button"
-                        onClick={() => handleToggleStatus(blog)}
-                        title={blog.status === "Published" ? "Unpublish to Draft" : "Publish"}
-                        className="text-[#807d73] hover:text-[#243126] transition cursor-pointer"
-                      >
-                        {blog.status === "Published" ? (
-                          <Eye size={16} />
-                        ) : (
-                          <EyeOff size={16} />
-                        )}
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleOpenEditModal(blog)}
-                        title="Edit Article"
-                        className="text-[#807d73] hover:text-[#243126] transition cursor-pointer"
-                      >
-                        <Pencil size={15} />
-                      </button>
-
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteBlog(blog.id)}
-                        title="Delete Article"
-                        className="text-[#807d73] hover:text-rose-600 transition cursor-pointer"
-                      >
-                        <Trash2 size={15} />
-                      </button>
-                    </td>
+      {/* Articles Container */}
+      {loading ? (
+        <div className="p-16 flex justify-center text-[#807d73]">
+          <Loader2 className="animate-spin" size={24} />
+        </div>
+      ) : blogs.length === 0 ? (
+        <div className="p-12 text-center text-xs text-[#807d73]">
+          No blog articles found in database. Click &quot;New article&quot; to write one.
+        </div>
+      ) : (
+        <>
+          {/* Desktop View Table (Untouched) */}
+          <div className="hidden sm:block bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-[#243126]">
+                <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
+                  <tr>
+                    <th className="p-5 font-semibold w-2/5">ARTICLE</th>
+                    <th className="p-5 font-semibold">CATEGORY</th>
+                    <th className="p-5 font-semibold">PUBLISHED</th>
+                    <th className="p-5 font-semibold">LIKES</th>
+                    <th className="p-5 font-semibold">STATUS</th>
+                    <th className="p-5 font-semibold text-right"></th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[#f3efe6]">
+                  {blogs.map((blog) => (
+                    <tr key={blog.id} className="hover:bg-[#fbf9f3]/60 transition-colors">
+                      <td className="p-5 space-y-0.5">
+                        <p className="font-medium text-[#243126] line-clamp-1">
+                          {blog.title}
+                        </p>
+                        <p className="text-[11px] text-[#807d73]">{blog.author}</p>
+                      </td>
+
+                      <td className="p-5 text-[#66655d]">{blog.category}</td>
+
+                      <td className="p-5 text-[#66655d]">
+                        {formatDateShort(blog.published_date)}
+                      </td>
+
+                      <td className="p-5 font-medium text-[#243126]">{blog.likes}</td>
+
+                      <td className="p-5">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-md text-[10px] font-semibold tracking-wider ${
+                            blog.status === "Published"
+                              ? "bg-[#dce6d8] text-[#243126]"
+                              : "bg-[#f3efe6] text-[#807d73]"
+                          }`}
+                        >
+                          {blog.status}
+                        </span>
+                      </td>
+
+                      <td className="p-5 text-right space-x-3">
+                        <button
+                          type="button"
+                          onClick={() => handleToggleStatus(blog)}
+                          title={blog.status === "Published" ? "Unpublish to Draft" : "Publish"}
+                          className="text-[#807d73] hover:text-[#243126] transition cursor-pointer"
+                        >
+                          {blog.status === "Published" ? (
+                            <Eye size={16} />
+                          ) : (
+                            <EyeOff size={16} />
+                          )}
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleOpenEditModal(blog)}
+                          title="Edit Article"
+                          className="text-[#807d73] hover:text-[#243126] transition cursor-pointer"
+                        >
+                          <Pencil size={15} />
+                        </button>
+
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteBlog(blog.id)}
+                          title="Delete Article"
+                          className="text-[#807d73] hover:text-rose-600 transition cursor-pointer"
+                        >
+                          <Trash2 size={15} />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* Mobile View Card List (No Horizontal Scroll) */}
+          <div className="block sm:hidden space-y-3.5">
+            {blogs.map((blog) => (
+              <div
+                key={blog.id}
+                className="bg-white rounded-2xl p-4 border border-[#e8e2d4]/80 space-y-3 shadow-xs"
+              >
+                <div className="space-y-1">
+                  <div className="flex items-start justify-between gap-2">
+                    <p className="font-serif text-sm font-medium text-[#243126] line-clamp-2">
+                      {blog.title}
+                    </p>
+                    <span
+                      className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold tracking-wider shrink-0 ${
+                        blog.status === "Published"
+                          ? "bg-[#dce6d8] text-[#243126]"
+                          : "bg-[#f3efe6] text-[#807d73]"
+                      }`}
+                    >
+                      {blog.status}
+                    </span>
+                  </div>
+                  <p className="text-[11px] text-[#807d73]">
+                    {blog.category} • {formatDateShort(blog.published_date)}
+                  </p>
+                </div>
+
+                <div className="flex items-center justify-between pt-2.5 border-t border-[#f3efe6] text-xs">
+                  <span className="text-[#66655d]">
+                    Likes: <strong className="text-[#243126]">{blog.likes}</strong>
+                  </span>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleToggleStatus(blog)}
+                      className="text-[#807d73] hover:text-[#243126] p-1 flex items-center gap-1 text-[11px] font-medium"
+                      title="Toggle Status"
+                    >
+                      {blog.status === "Published" ? <Eye size={13} /> : <EyeOff size={13} />}
+                      <span>{blog.status === "Published" ? "Hide" : "Publish"}</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleOpenEditModal(blog)}
+                      className="text-[#243126] hover:text-[#285538] p-1 flex items-center gap-1 text-[11px] font-medium"
+                    >
+                      <Pencil size={13} className="stroke-[1.75]" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteBlog(blog.id)}
+                      className="text-rose-600 hover:text-rose-700 p-1 flex items-center gap-1 text-[11px] font-medium"
+                    >
+                      <Trash2 size={13} className="stroke-[1.75]" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* New / Edit Article Modal */}
       {isModalOpen && (

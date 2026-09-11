@@ -72,7 +72,6 @@ export default function AdminProductsPage() {
       if (catRes.data && catRes.data.length > 0) {
         setCategoriesList(catRes.data);
       } else {
-        // Fallback default options
         setCategoriesList([
           { id: "1", name: "Superfoods" },
           { id: "2", name: "Daily Wellness" },
@@ -87,7 +86,6 @@ export default function AdminProductsPage() {
     }
   }
 
-  // Image File Upload Handler
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     try {
       const file = e.target.files?.[0];
@@ -209,7 +207,7 @@ export default function AdminProductsPage() {
   }
 
   return (
-    <div className="max-w-6xl space-y-8">
+    <div className="max-w-6xl space-y-6 sm:space-y-8">
       {/* Header Bar */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
@@ -231,99 +229,148 @@ export default function AdminProductsPage() {
         </button>
       </div>
 
-      {/* Products Table */}
-      <div className="bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
-        {loading ? (
-          <div className="p-16 flex justify-center text-[#807d73]">
-            <Loader2 className="animate-spin" size={24} />
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-[#243126]">
-              <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
-                <tr>
-                  <th className="p-5 font-semibold">PRODUCT</th>
-                  <th className="p-5 font-semibold">CATEGORY</th>
-                  <th className="p-5 font-semibold">PRICE</th>
-                  <th className="p-5 font-semibold">STOCK</th>
-                  <th className="p-5 font-semibold">RATING</th>
-                  <th className="p-5 font-semibold text-right">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#f3efe6]">
-                {products.map((product) => (
-                  <tr
-                    key={product.id}
-                    className="hover:bg-[#fbf9f3]/60 transition-colors"
-                  >
-                    <td className="p-5 flex items-center gap-4">
-                      <div className="relative w-11 h-11 rounded-lg overflow-hidden bg-[#f3efe6] shrink-0 border border-[#e8e2d4]/50">
-                        <Image
-                          src={product.image_url || "/images/products/placeholder.jpg"}
-                          alt={product.name}
-                          fill
-                          className="object-cover"
-                        />
-                      </div>
-                      <div>
-                        <p className="font-serif text-sm font-medium text-[#243126]">
-                          {product.name}
-                        </p>
-                        {product.description && (
-                          <p className="text-xs text-[#807d73] mt-0.5 line-clamp-1 max-w-xs">
-                            {product.description}
-                          </p>
-                        )}
-                      </div>
-                    </td>
-
-                    <td className="p-5 text-[#66655d] font-normal">
-                      {product.category}
-                    </td>
-
-                    <td className="p-5 font-semibold text-[#243126]">
-                      ₹{product.price}
-                    </td>
-
-                    <td className="p-5 text-[#66655d] font-normal">
-                      {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
-                    </td>
-
-                    <td className="p-5 text-[#66655d] font-normal">
-                      <div className="flex items-center gap-1">
-                        <Star size={13} className="fill-[#285538] stroke-none" />
-                        <span>{product.rating ?? 0}</span>
-                        <span className="text-[#807d73] text-[11px]">
-                          ({product.reviews_count ?? 0})
-                        </span>
-                      </div>
-                    </td>
-
-                    <td className="p-5 text-right space-x-3">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenModal(product)}
-                        className="text-[#243126] hover:text-[#285538] transition cursor-pointer"
-                        title="Edit"
-                      >
-                        <Pencil size={16} className="stroke-[1.75]" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteProduct(product.id)}
-                        className="text-[#243126] hover:text-rose-600 transition cursor-pointer"
-                        title="Delete"
-                      >
-                        <Trash2 size={16} className="stroke-[1.75]" />
-                      </button>
-                    </td>
+      {loading ? (
+        <div className="p-16 flex justify-center text-[#807d73]">
+          <Loader2 className="animate-spin" size={24} />
+        </div>
+      ) : (
+        <>
+          {/* Desktop View Table (Untouched) */}
+          <div className="hidden sm:block bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-[#243126]">
+                <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
+                  <tr>
+                    <th className="p-5 font-semibold">PRODUCT</th>
+                    <th className="p-5 font-semibold">CATEGORY</th>
+                    <th className="p-5 font-semibold">PRICE</th>
+                    <th className="p-5 font-semibold">STOCK</th>
+                    <th className="p-5 font-semibold">RATING</th>
+                    <th className="p-5 font-semibold text-right">ACTIONS</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[#f3efe6]">
+                  {products.map((product) => (
+                    <tr key={product.id} className="hover:bg-[#fbf9f3]/60 transition-colors">
+                      <td className="p-5 flex items-center gap-4">
+                        <div className="relative w-11 h-11 rounded-lg overflow-hidden bg-[#f3efe6] shrink-0 border border-[#e8e2d4]/50">
+                          <Image
+                            src={product.image_url || "/images/products/placeholder.jpg"}
+                            alt={product.name}
+                            fill
+                            className="object-cover"
+                          />
+                        </div>
+                        <div>
+                          <p className="font-serif text-sm font-medium text-[#243126]">
+                            {product.name}
+                          </p>
+                          {product.description && (
+                            <p className="text-xs text-[#807d73] mt-0.5 line-clamp-1 max-w-xs">
+                              {product.description}
+                            </p>
+                          )}
+                        </div>
+                      </td>
+
+                      <td className="p-5 text-[#66655d] font-normal">{product.category}</td>
+                      <td className="p-5 font-semibold text-[#243126]">₹{product.price}</td>
+                      <td className="p-5 text-[#66655d] font-normal">
+                        {product.stock > 0 ? `${product.stock} in stock` : "Out of stock"}
+                      </td>
+                      <td className="p-5 text-[#66655d] font-normal">
+                        <div className="flex items-center gap-1">
+                          <Star size={13} className="fill-[#285538] stroke-none" />
+                          <span>{product.rating ?? 0}</span>
+                          <span className="text-[#807d73] text-[11px]">({product.reviews_count ?? 0})</span>
+                        </div>
+                      </td>
+                      <td className="p-5 text-right space-x-3">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenModal(product)}
+                          className="text-[#243126] hover:text-[#285538] transition cursor-pointer"
+                          title="Edit"
+                        >
+                          <Pencil size={16} className="stroke-[1.75]" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteProduct(product.id)}
+                          className="text-[#243126] hover:text-rose-600 transition cursor-pointer"
+                          title="Delete"
+                        >
+                          <Trash2 size={16} className="stroke-[1.75]" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* Mobile View Card List (No Horizontal Scroll) */}
+          <div className="block sm:hidden space-y-3.5">
+            {products.map((product) => (
+              <div
+                key={product.id}
+                className="bg-white rounded-2xl p-4 border border-[#e8e2d4]/80 space-y-3 shadow-xs"
+              >
+                <div className="flex items-start gap-3">
+                  <div className="relative w-12 h-12 rounded-xl overflow-hidden bg-[#f3efe6] shrink-0 border border-[#e8e2d4]/50">
+                    <Image
+                      src={product.image_url || "/images/products/placeholder.jpg"}
+                      alt={product.name}
+                      fill
+                      className="object-cover"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-serif text-sm font-medium text-[#243126] truncate">
+                      {product.name}
+                    </p>
+                    <p className="text-[11px] text-[#807d73] mt-0.5">
+                      {product.category}
+                    </p>
+                  </div>
+                  <div className="text-right shrink-0">
+                    <p className="font-semibold text-xs text-[#243126]">₹{product.price}</p>
+                    <p className="text-[10px] text-[#66655d] mt-0.5">{product.stock} in stock</p>
+                  </div>
+                </div>
+
+                <div className="flex items-center justify-between pt-2.5 border-t border-[#f3efe6] text-xs">
+                  <div className="flex items-center gap-1 text-[#66655d]">
+                    <Star size={12} className="fill-[#285538] stroke-none" />
+                    <span>{product.rating ?? 0}</span>
+                    <span className="text-[#807d73]">({product.reviews_count ?? 0})</span>
+                  </div>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenModal(product)}
+                      className="text-[#243126] hover:text-[#285538] p-1 flex items-center gap-1 text-[11px] font-medium"
+                    >
+                      <Pencil size={13} className="stroke-[1.75]" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteProduct(product.id)}
+                      className="text-rose-600 hover:text-rose-700 p-1 flex items-center gap-1 text-[11px] font-medium"
+                    >
+                      <Trash2 size={13} className="stroke-[1.75]" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Add / Edit Product Modal */}
       {showModal && (
@@ -371,7 +418,6 @@ export default function AdminProductsPage() {
               </div>
 
               <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
-                {/* Dynamic Category Dropdown */}
                 <div>
                   <label className="text-xs font-semibold text-[#66655d] block mb-1">
                     Category
@@ -417,7 +463,6 @@ export default function AdminProductsPage() {
                 </div>
               </div>
 
-              {/* Product Image Section */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-[#66655d] block">
                   Product Image
@@ -463,7 +508,6 @@ export default function AdminProductsPage() {
                 )}
               </div>
 
-              {/* Product Detailed Specifications */}
               <div className="pt-3 border-t border-[#f3efe6] space-y-3">
                 <h4 className="font-serif text-sm font-medium text-[#243126]">
                   Product Details & Usage Instructions

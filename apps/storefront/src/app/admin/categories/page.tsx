@@ -87,7 +87,6 @@ export default function AdminCategoriesPage() {
     }
   }
 
-  // Image Upload Handler for Categories Bucket
   async function handleImageUpload(e: React.ChangeEvent<HTMLInputElement>) {
     try {
       const file = e.target.files?.[0];
@@ -189,7 +188,7 @@ export default function AdminCategoriesPage() {
   }
 
   return (
-    <div className="max-w-6xl space-y-8">
+    <div className="max-w-6xl space-y-6 sm:space-y-8">
       {/* Header Bar */}
       <div className="flex items-center justify-between">
         <div className="space-y-1">
@@ -211,79 +210,125 @@ export default function AdminCategoriesPage() {
         </button>
       </div>
 
-      {/* Categories Table */}
-      <div className="bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
-        {loading ? (
-          <div className="p-16 flex justify-center text-[#807d73]">
-            <Loader2 className="animate-spin" size={24} />
-          </div>
-        ) : (
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-xs text-[#243126]">
-              <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
-                <tr>
-                  <th className="p-5 font-semibold">CATEGORY</th>
-                  <th className="p-5 font-semibold">SLUG</th>
-                  <th className="p-5 font-semibold">PRODUCTS</th>
-                  <th className="p-5 font-semibold">STATUS</th>
-                  <th className="p-5 font-semibold text-right">ACTIONS</th>
-                </tr>
-              </thead>
-              <tbody className="divide-y divide-[#f3efe6]">
-                {categories.map((cat) => (
-                  <tr
-                    key={cat.id}
-                    className="hover:bg-[#fbf9f3]/60 transition-colors"
-                  >
-                    <td className="p-5 font-serif text-sm font-medium text-[#243126]">
-                      {cat.name}
-                    </td>
-
-                    <td className="p-5 text-[#66655d] font-normal">
-                      {cat.slug}
-                    </td>
-
-                    <td className="p-5 text-[#243126] font-medium">
-                      {cat.productsCount ?? 0}
-                    </td>
-
-                    <td className="p-5 text-[#66655d] font-normal">
-                      <span
-                        className={`inline-block px-2.5 py-1 rounded-md text-[10px] font-semibold ${
-                          cat.is_active
-                            ? "bg-[#e2ebd8] text-[#1e3b2b]"
-                            : "bg-[#f3efe6] text-[#807d73]"
-                        }`}
-                      >
-                        {cat.is_active ? "Active" : "Inactive"}
-                      </span>
-                    </td>
-
-                    <td className="p-5 text-right space-x-3">
-                      <button
-                        type="button"
-                        onClick={() => handleOpenModal(cat)}
-                        className="text-[#243126] hover:text-[#285538] transition cursor-pointer"
-                        title="Edit"
-                      >
-                        <Pencil size={16} className="stroke-[1.75]" />
-                      </button>
-                      <button
-                        type="button"
-                        onClick={() => handleDeleteCategory(cat.id)}
-                        className="text-[#243126] hover:text-rose-600 transition cursor-pointer"
-                        title="Delete"
-                      >
-                        <Trash2 size={16} className="stroke-[1.75]" />
-                      </button>
-                    </td>
+      {loading ? (
+        <div className="p-16 flex justify-center text-[#807d73]">
+          <Loader2 className="animate-spin" size={24} />
+        </div>
+      ) : (
+        <>
+          {/* Desktop View Table (Untouched) */}
+          <div className="hidden sm:block bg-white rounded-2xl border border-[#e8e2d4]/80 overflow-hidden shadow-none">
+            <div className="overflow-x-auto">
+              <table className="w-full text-left text-xs text-[#243126]">
+                <thead className="bg-[#fbf9f3] text-[#807d73] uppercase tracking-[0.15em] text-[10px] font-semibold border-b border-[#e8e2d4]/70">
+                  <tr>
+                    <th className="p-5 font-semibold">CATEGORY</th>
+                    <th className="p-5 font-semibold">SLUG</th>
+                    <th className="p-5 font-semibold">PRODUCTS</th>
+                    <th className="p-5 font-semibold">STATUS</th>
+                    <th className="p-5 font-semibold text-right">ACTIONS</th>
                   </tr>
-                ))}
-              </tbody>
-            </table>
+                </thead>
+                <tbody className="divide-y divide-[#f3efe6]">
+                  {categories.map((cat) => (
+                    <tr key={cat.id} className="hover:bg-[#fbf9f3]/60 transition-colors">
+                      <td className="p-5 font-serif text-sm font-medium text-[#243126]">
+                        {cat.name}
+                      </td>
+                      <td className="p-5 text-[#66655d] font-normal">{cat.slug}</td>
+                      <td className="p-5 text-[#243126] font-medium">{cat.productsCount ?? 0}</td>
+                      <td className="p-5 text-[#66655d] font-normal">
+                        <span
+                          className={`inline-block px-2.5 py-1 rounded-md text-[10px] font-semibold ${
+                            cat.is_active
+                              ? "bg-[#e2ebd8] text-[#1e3b2b]"
+                              : "bg-[#f3efe6] text-[#807d73]"
+                          }`}
+                        >
+                          {cat.is_active ? "Active" : "Inactive"}
+                        </span>
+                      </td>
+                      <td className="p-5 text-right space-x-3">
+                        <button
+                          type="button"
+                          onClick={() => handleOpenModal(cat)}
+                          className="text-[#243126] hover:text-[#285538] transition cursor-pointer"
+                          title="Edit"
+                        >
+                          <Pencil size={16} className="stroke-[1.75]" />
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleDeleteCategory(cat.id)}
+                          className="text-[#243126] hover:text-rose-600 transition cursor-pointer"
+                          title="Delete"
+                        >
+                          <Trash2 size={16} className="stroke-[1.75]" />
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
           </div>
-        )}
-      </div>
+
+          {/* Mobile View Card List (No Horizontal Scroll) */}
+          <div className="block sm:hidden space-y-3.5">
+            {categories.map((cat) => (
+              <div
+                key={cat.id}
+                className="bg-white rounded-2xl p-4 border border-[#e8e2d4]/80 space-y-3 shadow-xs"
+              >
+                <div className="flex items-start justify-between gap-2">
+                  <div>
+                    <p className="font-serif text-sm font-medium text-[#243126]">
+                      {cat.name}
+                    </p>
+                    <p className="text-[11px] text-[#807d73] mt-0.5 font-mono">
+                      /{cat.slug}
+                    </p>
+                  </div>
+                  <span
+                    className={`inline-block px-2 py-0.5 rounded-md text-[10px] font-semibold shrink-0 ${
+                      cat.is_active
+                        ? "bg-[#e2ebd8] text-[#1e3b2b]"
+                        : "bg-[#f3efe6] text-[#807d73]"
+                    }`}
+                  >
+                    {cat.is_active ? "Active" : "Inactive"}
+                  </span>
+                </div>
+
+                <div className="flex items-center justify-between pt-2.5 border-t border-[#f3efe6] text-xs">
+                  <span className="text-[#66655d]">
+                    Products: <strong className="text-[#243126]">{cat.productsCount ?? 0}</strong>
+                  </span>
+
+                  <div className="flex items-center gap-3">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenModal(cat)}
+                      className="text-[#243126] hover:text-[#285538] p-1 flex items-center gap-1 text-[11px] font-medium"
+                    >
+                      <Pencil size={13} className="stroke-[1.75]" />
+                      <span>Edit</span>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDeleteCategory(cat.id)}
+                      className="text-rose-600 hover:text-rose-700 p-1 flex items-center gap-1 text-[11px] font-medium"
+                    >
+                      <Trash2 size={13} className="stroke-[1.75]" />
+                      <span>Delete</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </>
+      )}
 
       {/* Add / Edit Category Modal */}
       {showModal && (
@@ -363,7 +408,6 @@ export default function AdminCategoriesPage() {
                 />
               </div>
 
-              {/* Category Banner Image */}
               <div className="space-y-1.5">
                 <label className="text-xs font-semibold text-[#66655d] block">
                   Category Image

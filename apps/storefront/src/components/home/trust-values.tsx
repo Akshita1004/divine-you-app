@@ -4,7 +4,8 @@ export function TrustValues() {
   return (
     <section className="bg-background py-12">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid gap-12 sm:grid-cols-2 lg:grid-cols-4 text-center">
+        {/* Mobile par grid-cols-2 aur desktop par lg:grid-cols-4 kiya hai */}
+        <div className="grid grid-cols-2 gap-x-6 gap-y-10 lg:grid-cols-4 text-center">
           <div className="flex flex-col items-center">
             <div className="flex h-14 w-14 items-center justify-center rounded-full bg-sage mb-4">
               <Leaf size={20} strokeWidth={1.7} className="text-forest" />

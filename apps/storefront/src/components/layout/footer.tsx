@@ -38,7 +38,8 @@ export function Footer() {
   return (
     <footer className="bg-[#f3efe6] border-t border-border/50 text-foreground pt-16 pb-8">
       <div className="mx-auto max-w-7xl px-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 gap-10 pb-12">
+        {/* Desktop grid remains 100% untouched (lg:grid-cols-12), mobile uses a custom 3-column layout */}
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-10 pb-12">
           
           {/* Brand Info */}
           <div className="lg:col-span-5 space-y-6">
@@ -84,110 +85,115 @@ export function Footer() {
             </div>
           </div>
 
-          {/* Dynamic Shop Categories */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="font-serif text-xs font-semibold tracking-[0.2em] uppercase text-foreground/80">
-              SHOP
-            </h4>
-            <ul className="space-y-2.5 text-[13px] text-muted-foreground">
-              <li>
-                <Link href="/shop" className="hover:text-forest transition-colors">
-                  All Products
-                </Link>
-              </li>
-              <li>
-                <Link href="/best-sellers" className="hover:text-forest transition-colors">
-                  Best Sellers
-                </Link>
-              </li>
-              {categories.map((cat) => (
-                <li key={cat.id || cat.slug}>
-                  <Link
-                    href={`/shop?category=${cat.slug}`}
-                    className="hover:text-forest transition-colors"
-                  >
-                    {cat.name}
+          {/* Links Container */}
+          <div className="grid grid-cols-3 gap-3 sm:gap-4 lg:contents">
+            
+            {/* Dynamic Shop Categories */}
+            <div className="lg:col-span-2 space-y-4">
+              <h4 className="font-serif text-[10px] sm:text-xs font-semibold tracking-[0.1em] sm:tracking-[0.2em] uppercase text-foreground/80">
+                SHOP
+              </h4>
+              <ul className="space-y-2.5 text-[13px] text-muted-foreground">
+                <li>
+                  <Link href="/shop" className="hover:text-forest transition-colors">
+                    All Products
                   </Link>
                 </li>
-              ))}
-            </ul>
-          </div>
-
-          {/* Support Links */}
-          <div className="lg:col-span-2 space-y-4">
-            <h4 className="font-serif text-xs font-semibold tracking-[0.2em] uppercase text-foreground/80">
-              SUPPORT
-            </h4>
-            <ul className="space-y-2.5 text-[13px] text-muted-foreground">
-              <li>
-                <Link href="/contact" className="hover:text-forest transition-colors">
-                  Contact Us
-                </Link>
-              </li>
-              <li>
-                <Link href="/about" className="hover:text-forest transition-colors">
-                  Our Story
-                </Link>
-              </li>
-              <li>
-                <Link href="/account" className="hover:text-forest transition-colors">
-                  Track Order
-                </Link>
-              </li>
-              <li>
-                <Link href="/account" className="hover:text-forest transition-colors">
-                  Shipping & Returns
-                </Link>
-              </li>
-            </ul>
-          </div>
-
-          {/* Social Links Only */}
-          <div className="lg:col-span-3 space-y-4">
-            <h4 className="font-serif text-xs font-semibold tracking-[0.2em] uppercase text-foreground/80">
-              STAY IN TOUCH
-            </h4>
-
-            <div className="flex items-center gap-3 pt-1">
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border text-foreground hover:border-forest hover:text-forest transition-colors shadow-soft"
-              >
-                <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
-                  <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-                  <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-                  <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-                </svg>
-              </a>
-
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border text-foreground hover:border-forest hover:text-forest transition-colors shadow-soft"
-              >
-                <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
-                </svg>
-              </a>
-
-              <a
-                href="https://youtube.com"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="YouTube"
-                className="flex h-10 w-10 items-center justify-center rounded-full bg-card border border-border text-foreground hover:border-forest hover:text-forest transition-colors shadow-soft"
-              >
-                <svg className="w-4 h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
-                  <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
-                  <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
-                </svg>
-              </a>
+                <li>
+                  <Link href="/best-sellers" className="hover:text-forest transition-colors">
+                    Best Sellers
+                  </Link>
+                </li>
+                {categories.map((cat) => (
+                  <li key={cat.id || cat.slug}>
+                    <Link
+                      href={`/shop?category=${cat.slug}`}
+                      className="hover:text-forest transition-colors"
+                    >
+                      {cat.name}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
             </div>
+
+            {/* Support Links */}
+            <div className="lg:col-span-2 space-y-4">
+              <h4 className="font-serif text-[10px] sm:text-xs font-semibold tracking-[0.1em] sm:tracking-[0.2em] uppercase text-foreground/80">
+                SUPPORT
+              </h4>
+              <ul className="space-y-2.5 text-[13px] text-muted-foreground">
+                <li>
+                  <Link href="/contact" className="hover:text-forest transition-colors">
+                    Contact Us
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/about" className="hover:text-forest transition-colors">
+                    Our Story
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/account" className="hover:text-forest transition-colors">
+                    Track Order
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/account" className="hover:text-forest transition-colors">
+                    Shipping & Returns
+                  </Link>
+                </li>
+              </ul>
+            </div>
+
+            {/* Social Links Only */}
+            <div className="lg:col-span-3 space-y-4">
+              <h4 className="font-serif text-[10px] sm:text-xs font-semibold tracking-[0.1em] sm:tracking-[0.2em] uppercase text-foreground/80 whitespace-nowrap">
+                STAY IN TOUCH
+              </h4>
+
+              <div className="flex items-center gap-1.5 sm:gap-3 pt-1">
+                <a
+                  href="https://instagram.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Instagram"
+                  className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-card border border-border text-foreground hover:border-forest hover:text-forest transition-colors shadow-soft shrink-0"
+                >
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
+                    <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                    <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                    <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                  </svg>
+                </a>
+
+                <a
+                  href="https://facebook.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="Facebook"
+                  className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-card border border-border text-foreground hover:border-forest hover:text-forest transition-colors shadow-soft shrink-0"
+                >
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path>
+                  </svg>
+                </a>
+
+                <a
+                  href="https://youtube.com"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  aria-label="YouTube"
+                  className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-full bg-card border border-border text-foreground hover:border-forest hover:text-forest transition-colors shadow-soft shrink-0"
+                >
+                  <svg className="w-3.5 h-3.5 sm:w-4 sm:h-4 fill-none stroke-current" strokeWidth="2" viewBox="0 0 24 24">
+                    <path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.46a2.78 2.78 0 0 0-1.94 2A29 29 0 0 0 1 11.75a29 29 0 0 0 .46 5.33A2.78 2.78 0 0 0 3.4 19c1.72.46 8.6.46 8.6.46s6.88 0 8.6-.46a2.78 2.78 0 0 0 1.94-2 29 29 0 0 0 .46-5.25 29 29 0 0 0-.46-5.33z"></path>
+                    <polygon points="9.75 15.02 15.5 11.75 9.75 8.48 9.75 15.02"></polygon>
+                  </svg>
+                </a>
+              </div>
+            </div>
+
           </div>
 
         </div>
